@@ -1,3 +1,8 @@
+use std::io::{self, Write};
+
+pub const OUT_OF_BOUNDS: &str = "Invalid input. Please enter a number between 0 and 8.";
+pub const POSITION_TAKEN: &str = "Position already taken. Please choose another.";
+pub const INVALID_CHAR_INPUT: &str = "Please enter a number";
 
 
 fn render_board(cells: &[Option<char>; 9]) -> String {
@@ -29,23 +34,25 @@ fn cell_text(cells: &[Option<char>; 9], idx: usize) -> String {
     }
 }
 
-pub fn display_board(cells: &[Option<char>; 9], mut write: impl std::io::Write) {
-    write!(write, "{}", render_board(cells)).unwrap();
+pub fn display_board(cells: &[Option<char>; 9], mut write: impl Write) -> io::Result<()> {
+    write!(write, "{}", render_board(cells))
 }
 
-pub fn prompt_player(player: char, mut write: impl std::io::Write) {
-    let _ = writeln!(write, "Player {}, enter your move (0-8): ", player);
+pub fn prompt_player(player: char, mut write: impl Write) -> io::Result<()> {
+    writeln!(write, "Player {}, enter your move: ", player)
 }
 
-pub fn input_out_of_bounds(mut write: impl std::io::Write) {
-    let _ = writeln!(write, "Invalid input. Please enter a number between 0 and 8.");
+pub fn write_error(mut write: impl Write, error: &str) -> io::Result<()> {
+    writeln!(write, "{}", error)
 }
 
-pub fn position_taken(mut write: impl std::io::Write) {
-    let _ = writeln!(write, "Position already taken. Please choose another.");
+pub fn announce_winner(winner: char, mut write: impl Write) -> io::Result<()> {
+    writeln!(write, "Player {} wins!", winner)
 }
 
-
+pub fn announce_tie(mut write: impl Write) -> io::Result<()> {
+    writeln!(write, "The game is a tie!")
+}
 
 #[cfg(test)]
-mod ui_spec;
+mod spec;

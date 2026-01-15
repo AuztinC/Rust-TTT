@@ -1,12 +1,19 @@
-mod human;
-mod ui;
+use crate::state::GameState;
+
+mod state;
 mod game;
+mod human;
 mod rules;
-
-fn main() {
-    let state = game::GameState::new();
+mod ui;
 
 
-    ui::display_board(&state.cells, std::io::stdout());
-    ui::prompt_player(state.current_player, std::io::stdout());
+fn main() -> std::io::Result<()> {
+    let initial_state = GameState::new();
+    let stdin = std::io::stdin();
+    let mut input = stdin.lock();
+    let stdout = std::io::stdout();
+    let output = stdout.lock();
+
+    game::game_loop(initial_state, output, &mut input)?;
+    Ok(())
 }

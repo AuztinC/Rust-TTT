@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod tests {
+mod game_states {
     use crate::rules::*;
     #[test]
     fn detects_winner_horizontal() {

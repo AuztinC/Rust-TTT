@@ -32,4 +32,4 @@ pub fn open_cells(cells: &[Option<char>; 9]) -> Vec<usize> {
 }
 
 #[cfg(test)]
-mod rules_spec;
+mod spec;
