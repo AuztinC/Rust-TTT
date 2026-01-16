@@ -1,3 +1,4 @@
+
 pub fn winner(cells: &[Option<char>; 9]) -> Option<char> {
     let winning_combinations = [
         (0, 1, 2),

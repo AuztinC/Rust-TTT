@@ -1,4 +1,4 @@
-use std::io::{self, BufRead, Write};
+use std::io::{BufRead, Write};
 use crate::ui;
 use crate::state::GameState;
 
@@ -12,19 +12,19 @@ fn parse_input(input: &str) -> Result<usize, &'static str> {
     }
 }
 
-pub fn read_move(state: &GameState, input: &mut dyn BufRead, out: &mut dyn Write) -> io::Result<usize> {
+pub fn read_move(state: &GameState, input: &mut dyn BufRead, out: &mut dyn Write) -> usize {
     loop {
         let mut line = String::new();
-        input.read_line(&mut line)?;
+        input.read_line(&mut line).unwrap();
 
         match parse_input(&line) {
             Ok(pos) => { if state.board()[pos].is_none() {
-                 return Ok(pos); 
+                 return pos;
                 } else { 
-                    ui::write_error(&mut *out, ui::POSITION_TAKEN)?; 
+                    ui::write_error(&mut *out, ui::POSITION_TAKEN).unwrap(); 
                 } 
             },
-            Err(e) => ui::write_error(&mut *out, e)?,
+            Err(e) => ui::write_error(&mut *out, e).unwrap(),
         }
     }
 }

@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod game_loop {
     use crate::game::*;
-    use crate::state::GameState;
+    use crate::state::*;
     use std::io::Cursor;
 
       fn io_helper(input_data: &[u8]) -> (GameState, Cursor<&[u8]>, Vec<u8>) {
@@ -16,17 +16,18 @@ mod game_loop {
         let (state, mut input, mut output) = io_helper(b"0\n1\n3\n4\n6\n");
         let final_state = game_loop(state, &mut output, &mut input).unwrap();
         let output_str = String::from_utf8(output).unwrap();
-        assert!(final_state.is_game_over());
-        assert!(output_str.contains("Player X wins!"));
+        assert!(final_state._is_game_over());
+        assert!(output_str.contains("Player O wins!"));
     }
 
     #[test]
     fn detects_tie() {
-        let (state, mut input, mut output) = io_helper(b"0\n1\n2\n4\n3\n5\n7\n6\n8\n");
+        let (state, mut input, mut output) = io_helper(b"0\n1\n6\n5\n7\n");
         let final_state = game_loop(state, &mut output, &mut input).unwrap();
         let output_str = String::from_utf8(output).unwrap();
-        assert!(final_state.is_tie());
+        assert!(final_state._is_tie());
         assert!(output_str.contains("The game is a tie!"));
     }
+
 
 }

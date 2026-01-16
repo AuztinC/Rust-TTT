@@ -2,12 +2,11 @@
 use std::io::{self, Write};
 use crate::ui;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct GameState {
     board: [Option<char>; 9],
     current_player: Player,
     screen_state: ScreenState,
-    game_over: bool,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -29,6 +28,34 @@ impl Player {
     }
 }
 
+// pub trait Agent {
+//     fn select_move(&mut self, state: &GameState) -> usize;
+// }
+
+// pub struct AiAgent;
+
+// impl Agent for AiAgent {
+//     fn select_move(&mut self, state: &GameState) -> usize {
+//         crate::ai::ai_move(state)
+//     }
+// }
+
+// pub struct Match<X: Agent, O: Agent> {
+//     pub x: X,
+//     pub o: O,
+// }
+
+// impl<X: Agent, O: Agent> Match<X, O> {
+//     pub fn select_move(&mut self, state: &GameState) -> usize {
+//         match state.current_player {
+//             Player::X => self.x.select_move(state),
+//             Player::O => self.o.select_move(state),
+//         }
+//     }
+// }
+
+
+
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum ScreenState {
     InGame,
@@ -47,9 +74,11 @@ impl ScreenState {
                 ui::display_board(state.board(), &mut *out)?;
             }
             ScreenState::GameOver => {
+                ui::display_board(state.board(), &mut *out)?;
                 ui::announce_winner(state.current_player.other().mark(), &mut *out)?;
             }
             ScreenState::TieGame => {
+                ui::display_board(state.board(), &mut *out)?;
                 ui::announce_tie(&mut *out)?;
             }
         }
@@ -65,7 +94,6 @@ impl GameState {
             board: [None; Self::BOARD_SIZE],
             current_player: Player::X,
             screen_state: ScreenState::InGame,
-            game_over: false,
         }
     }
 
@@ -77,6 +105,10 @@ impl GameState {
         self.current_player
     }
 
+    pub fn screen_state(&self) -> ScreenState {
+        self.screen_state
+    }
+
     pub fn render_screen(
         &self,
         out: &mut dyn Write,
@@ -84,25 +116,28 @@ impl GameState {
         self.screen_state.render(self, out)
     }
 
-    pub fn is_game_over(&self) -> bool {
+    pub fn _is_game_over(&self) -> bool {
         matches!(self.screen_state, ScreenState::GameOver)
     }
 
-    pub fn is_tie(&self) -> bool {
+    pub fn _is_tie(&self) -> bool {
         matches!(self.screen_state, ScreenState::TieGame)
     }
 
-    pub fn game_over(&mut self) {
+    pub fn game_over(&mut self) -> Self {
         self.screen_state = ScreenState::GameOver;
+        self.clone()
     }
 
-    pub fn tie_game(&mut self) {
+    pub fn tie(&mut self) -> Self {
         self.screen_state = ScreenState::TieGame;
+        self.clone()
     }
 
-    pub fn next_state(&mut self, idx: usize) {
+    pub fn apply_move(&mut self, idx: usize) -> Self {
         self.board[idx] = Some(self.current_player.mark());
         self.switch_player();
+        self.clone()
     }
 
     pub fn switch_player(&mut self) {

@@ -8,7 +8,7 @@ mod state {
         assert_eq!(state.board(), &[None; 9]);
         assert_eq!(state.current_player(), Player::X);
         assert_eq!(state.screen_state, ScreenState::InGame);
-        assert_eq!(state.is_game_over(), false);
+        assert_eq!(state._is_game_over(), false);
     }
 
     #[test]
@@ -36,9 +36,9 @@ mod state {
     #[test]
     fn applying_move_updates_board() {
         let mut state = GameState::new();
-        let _ = state.next_state(0);
+        let _ = state.apply_move(0);
         assert_eq!(state.board[0], Some('X'));
-        let _ = state.next_state(1);
+        let _ = state.apply_move(1);
         assert_eq!(state.board[1], Some('O'));
     }
 
@@ -46,6 +46,13 @@ mod state {
     fn game_over() {
         let mut state = GameState::new();
         state.game_over();
-        assert_eq!(state.is_game_over(), true);
+        assert_eq!(state._is_game_over(), true);
+    }
+
+    #[test]
+    fn as_tie() {
+        let mut state = GameState::new();
+        state.tie();
+        assert_eq!(state._is_tie(), true);
     }
 }

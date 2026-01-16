@@ -3,6 +3,7 @@ use crate::state::GameState;
 mod state;
 mod game;
 mod human;
+mod ai;
 mod rules;
 mod ui;
 

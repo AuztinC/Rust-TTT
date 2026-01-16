@@ -10,7 +10,7 @@ mod input {
         let state = state::GameState::new();
         let mut input = Cursor::new(input_data);
         let mut output: Vec<u8> = Vec::new();
-        let pos = read_move(&state, &mut input, &mut output).unwrap();
+        let pos = read_move(&state, &mut input, &mut output);
         (pos, output)
     }
 
@@ -40,10 +40,10 @@ mod input {
     #[test]
     fn retries_on_position_taken() {
         let mut state = state::GameState::new();
-        state.next_state(0);
+        state.apply_move(0);
         let mut input = Cursor::new(b"0\n1\n");
         let mut output: Vec<u8> = Vec::new();
-        let pos = read_move(&state, &mut input, &mut output).unwrap();
+        let pos = read_move(&state, &mut input, &mut output);
         let printed = String::from_utf8(output).unwrap();
         assert_eq!(pos, 1);
         assert!(printed.contains(POSITION_TAKEN));
