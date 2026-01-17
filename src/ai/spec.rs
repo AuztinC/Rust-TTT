@@ -1,7 +1,8 @@
 #[cfg(test)]
 mod ai {
     use crate::ai::*;
-    use crate::state::{GameState};
+    use crate::game::next_state;
+    use crate::state::GameState;
 
     #[test]
     fn center_on_empty_board() {
@@ -13,7 +14,7 @@ mod ai {
     #[test]
     fn corner_when_center_taken() {
         let mut state = GameState::new();
-        state.apply_move(4);
+        state = next_state(&state, 4);
         let mv = ai_move(&state);
         assert!([0, 2, 6, 8].contains(&mv));
     }
@@ -21,9 +22,9 @@ mod ai {
     #[test]
     fn block_opponent_win() {
         let mut state = GameState::new();
-        state.apply_move(0);
-        state.apply_move(4);
-        state.apply_move(1);
+        state = next_state(&state, 0);
+        state = next_state(&state, 4);
+        state = next_state(&state, 1);
         let mv = ai_move(&state);
         assert_eq!(mv, 2);
     }
@@ -31,11 +32,11 @@ mod ai {
     #[test]
     fn win_if_possible() {
         let mut state = GameState::new();
-        state.apply_move(0);
-        state.apply_move(4);
-        state.apply_move(8);
-        state.apply_move(1);
-        state.apply_move(3);
+        state = next_state(&state, 0);
+        state = next_state(&state, 4);
+        state = next_state(&state, 8);
+        state = next_state(&state, 1);
+        state = next_state(&state, 3);
         let mv = ai_move(&state);
         assert_eq!(mv, 7);
     }
@@ -43,11 +44,11 @@ mod ai {
     #[test]
     fn prefer_win_over_block() {
         let mut state = GameState::new();
-        state.apply_move(0);
-        state.apply_move(4);
-        state.apply_move(3);
-        state.apply_move(1);
-        state.apply_move(5);
+        state = next_state(&state, 0);
+        state = next_state(&state, 4);
+        state = next_state(&state, 3);
+        state = next_state(&state, 1);
+        state = next_state(&state, 5);
         let mv = ai_move(&state);
         assert_eq!(mv, 7);
     }
@@ -55,13 +56,54 @@ mod ai {
     #[test]
     fn force_tie_when_cannot_win() {
         let mut state = GameState::new();
-        state.apply_move(0);
-        state.apply_move(4);
-        state.apply_move(1);
-        state.apply_move(2);
-        state.apply_move(7);
+        state = next_state(&state, 0);
+        state = next_state(&state, 4);
+        state = next_state(&state, 1);
+        state = next_state(&state, 2);
+        state = next_state(&state, 7);
         let mv = ai_move(&state);
         assert_eq!(mv, 6);
     }
 
+    #[test]
+    fn ai_vs_ai_from_empty_board_is_tie() {
+        let mut state = GameState::new();
+
+        while rules::winner(&state.board()).is_none() && !rules::is_tie(&state.board()) {
+            let mv = ai_move(&state);
+            state = next_state(&state, mv);
+        }
+
+        assert!(
+            rules::winner(&state.board()).is_none(),
+            "winner found:\n{:?}",
+            state.board()
+        );
+        assert!(
+            rules::is_tie(&state.board()),
+            "not a tie:\n{:?}",
+            state.board()
+        );
+    }
+
+    #[test]
+    fn ai_vs_ai_ties_from_any_first_move() {
+        let state: GameState = GameState::new();
+        let open_positions = rules::_open_cells(state.board());
+        for pos in open_positions {
+            let mut state = GameState::new();
+            state = next_state(&state, pos);
+
+            while rules::winner(&state.board()).is_none() && !rules::is_tie(&state.board()) {
+                let mv = ai_move(&state);
+                state = next_state(&state, mv);
+            }
+
+            assert!(
+                rules::winner(&state.board()).is_none() && rules::is_tie(&state.board()),
+                "failed starting at {pos}, final board: {:?}",
+                state.board()
+            );
+        }
+    }
 }

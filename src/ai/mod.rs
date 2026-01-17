@@ -15,7 +15,14 @@ fn terminal_score(state: &GameState, maximizer: Player, depth: i32) -> Option<i3
     None
 }
 
-fn minimax(state: &GameState,turn: Player,maximizer: Player,depth: i32,mut alpha: i32,mut beta: i32,) -> i32 {
+fn minimax(
+    state: &GameState,
+    turn: Player,
+    maximizer: Player,
+    depth: i32,
+    mut alpha: i32,
+    mut beta: i32,
+) -> i32 {
     if let Some(score) = terminal_score(state, maximizer, depth) {
         return score;
     }
@@ -25,7 +32,8 @@ fn minimax(state: &GameState,turn: Player,maximizer: Player,depth: i32,mut alpha
     for (i, spot) in state.board().iter().enumerate() {
         if spot.is_none() {
             let mut next = state.clone();
-            next.apply_move(i);
+            next = next.apply_move(i);
+            next = next.switch_player();
 
             let score = minimax(
                 &next,
@@ -61,7 +69,8 @@ fn hard(state: &GameState) -> usize {
     for &i in priority.iter() {
         if state.board()[i].is_none() {
             let mut next = state.clone();
-            next.apply_move(i);
+            next = next.apply_move(i);
+            next = next.switch_player();
 
             let score = minimax(
                 &next,

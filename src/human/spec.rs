@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod input {
 
-    use crate::state;
     use crate::human::*;
+    use crate::state;
     use crate::ui::{INVALID_CHAR_INPUT, OUT_OF_BOUNDS, POSITION_TAKEN};
-    use std::io::{Cursor};
+    use std::io::Cursor;
 
     fn io_helper(input_data: &[u8]) -> (usize, Vec<u8>) {
         let state = state::GameState::new();
@@ -47,6 +47,5 @@ mod input {
         let printed = String::from_utf8(output).unwrap();
         assert_eq!(pos, 1);
         assert!(printed.contains(POSITION_TAKEN));
-
     }
 }

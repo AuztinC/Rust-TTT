@@ -4,7 +4,6 @@ pub const OUT_OF_BOUNDS: &str = "Invalid input. Please enter a number between 0 
 pub const POSITION_TAKEN: &str = "Position already taken. Please choose another.";
 pub const INVALID_CHAR_INPUT: &str = "Please enter a number";
 
-
 fn render_board(cells: &[Option<char>; 9]) -> String {
     let rows = [(0, 1, 2), (3, 4, 5), (6, 7, 8)];
 

@@ -1,4 +1,3 @@
-
 pub fn winner(cells: &[Option<char>; 9]) -> Option<char> {
     let winning_combinations = [
         (0, 1, 2),
@@ -24,7 +23,7 @@ pub fn is_tie(cells: &[Option<char>; 9]) -> bool {
     cells.iter().all(|cell| cell.is_some())
 }
 
-pub fn open_cells(cells: &[Option<char>; 9]) -> Vec<usize> {
+pub fn _open_cells(cells: &[Option<char>; 9]) -> Vec<usize> {
     cells
         .iter()
         .enumerate()

@@ -1,89 +1,20 @@
-
+mod controller;
+mod player;
+mod game_mode;
+mod screen;
+pub use player::Player;
+pub use game_mode::GameMode;
+pub use screen::ScreenState;
+use controller::{Controllers};
 use std::io::{self, Write};
-use crate::ui;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct GameState {
     board: [Option<char>; 9],
     current_player: Player,
     screen_state: ScreenState,
-}
-
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum Player { X, O }
-
-impl Player {
-    pub fn other(self) -> Self {
-        match self {
-            Player::X => Player::O,
-            Player::O => Player::X,
-        }
-    }
-    
-    pub fn mark(self) -> char {
-        match self {
-            Player::X => 'X',
-            Player::O => 'O',
-        }
-    }
-}
-
-// pub trait Agent {
-//     fn select_move(&mut self, state: &GameState) -> usize;
-// }
-
-// pub struct AiAgent;
-
-// impl Agent for AiAgent {
-//     fn select_move(&mut self, state: &GameState) -> usize {
-//         crate::ai::ai_move(state)
-//     }
-// }
-
-// pub struct Match<X: Agent, O: Agent> {
-//     pub x: X,
-//     pub o: O,
-// }
-
-// impl<X: Agent, O: Agent> Match<X, O> {
-//     pub fn select_move(&mut self, state: &GameState) -> usize {
-//         match state.current_player {
-//             Player::X => self.x.select_move(state),
-//             Player::O => self.o.select_move(state),
-//         }
-//     }
-// }
-
-
-
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
-pub enum ScreenState {
-    InGame,
-    GameOver,
-    TieGame,
-}
-
-impl ScreenState {
-    pub fn render(
-        &self,
-        state: &GameState,
-        out: &mut dyn Write,
-    ) -> io::Result<()> {
-        match self {
-            ScreenState::InGame => {
-                ui::display_board(state.board(), &mut *out)?;
-            }
-            ScreenState::GameOver => {
-                ui::display_board(state.board(), &mut *out)?;
-                ui::announce_winner(state.current_player.other().mark(), &mut *out)?;
-            }
-            ScreenState::TieGame => {
-                ui::display_board(state.board(), &mut *out)?;
-                ui::announce_tie(&mut *out)?;
-            }
-        }
-        out.flush()
-    }
+    game_mode: GameMode,
+    pub(crate) controllers: Controllers,
 }
 
 impl GameState {
@@ -94,6 +25,8 @@ impl GameState {
             board: [None; Self::BOARD_SIZE],
             current_player: Player::X,
             screen_state: ScreenState::InGame,
+            game_mode: GameMode::HumanVsAI,
+            controllers: Controllers::from(GameMode::HumanVsAI),
         }
     }
 
@@ -109,11 +42,28 @@ impl GameState {
         self.screen_state
     }
 
-    pub fn render_screen(
-        &self,
-        out: &mut dyn Write,
-    ) -> io::Result<()> {
+    pub fn render_screen(&self, out: &mut dyn Write) -> io::Result<()> {
         self.screen_state.render(self, out)
+    }
+
+    pub fn game_mode(&self) -> GameMode {
+        self.game_mode.clone()
+    }
+
+    pub fn controllers(&self) -> Controllers {
+        self.controllers.clone()
+    }
+
+    pub fn set_ai_vs_ai_mode(&mut self) -> Self {
+        self.game_mode = GameMode::AIvsAI;
+        self.controllers = Controllers::from(self.game_mode.clone());
+        self.clone()
+    }
+
+    pub fn set_hvh_mode(&mut self) -> Self {
+        self.game_mode = GameMode::HumanVsHuman;
+        self.controllers = Controllers::from(self.game_mode.clone());
+        self.clone()
     }
 
     pub fn _is_game_over(&self) -> bool {
@@ -124,24 +74,24 @@ impl GameState {
         matches!(self.screen_state, ScreenState::TieGame)
     }
 
-    pub fn game_over(&mut self) -> Self {
+    pub fn set_game_over(&mut self) -> Self {
         self.screen_state = ScreenState::GameOver;
         self.clone()
     }
 
-    pub fn tie(&mut self) -> Self {
+    pub fn set_tie(&mut self) -> Self {
         self.screen_state = ScreenState::TieGame;
         self.clone()
     }
 
     pub fn apply_move(&mut self, idx: usize) -> Self {
         self.board[idx] = Some(self.current_player.mark());
-        self.switch_player();
         self.clone()
     }
 
-    pub fn switch_player(&mut self) {
+    pub fn switch_player(&mut self) -> Self {
         self.current_player = self.current_player.other();
+        self.clone()
     }
 }
 
