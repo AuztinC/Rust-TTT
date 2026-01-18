@@ -15,6 +15,6 @@ Rust Install command
 Once you have Rust installed(verified by the version command)
 Use the following commands to run and test.
 
-- ``cargo run``             - run the project
+- ``cargo run``             - run the project; can be followed with `` -- -HvH`` or `` -- -AIvAI``
 - ``cargo test``            - run tests a single time
 - ``cargo watch -x test``   - run and watch tests
