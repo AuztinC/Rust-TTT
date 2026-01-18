@@ -1,7 +1,19 @@
 # Welcome to yet another Tic-Tac-Toe!
 ## Running this project
-Once you have this repo cloned, you can enter the following commands in your terminal
 
+### Requirements: Rust
 
-- ``cargo run``             - run the project locally in your terminal
-- ``cargo watch -x test``   - run the tests
+- Rust Install command 
+ - ``curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh``
+ - Either restart your terminal, or run this command 
+    - ``source ~/.cargo/env``
+
+Verify install 
+ - ``rustc --version``
+
+Once you have Rust installed(verified by the version command)
+Use the following commands to run and test.
+
+- ``cargo run``             - run the project
+- ``cargo test``            - run tests a single time
+- ``cargo watch -x test``   - run and watch tests
