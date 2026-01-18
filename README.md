@@ -17,4 +17,8 @@ Use the following commands to run and test.
 
 - ``cargo run``             - run the project; can be followed with `` -- -HvH`` or `` -- -AIvAI``
 - ``cargo test``            - run tests a single time
-- ``cargo watch -x test``   - run and watch tests
+
+### Developer Convience
+An auto runner for tests must be installed, this can be done simply using cargo!
+- ``cargo install cargo-watch`` - install the auto runner
+- ``cargo watch -x test``       - run and watch tests
