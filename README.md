@@ -3,13 +3,14 @@
 
 ### Requirements: Rust
 
+Check for Rust / Verify install 
+ - ``rustc --version``
+
 - Rust Install command 
  - ``curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh``
+
  - Either restart your terminal, or run this command 
     - ``source ~/.cargo/env``
-
-Verify install 
- - ``rustc --version``
 
 Once you have Rust installed(verified by the version command)
 Use the following commands to run and test.
