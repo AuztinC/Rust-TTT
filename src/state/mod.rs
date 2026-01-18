@@ -14,7 +14,7 @@ pub struct GameState {
     current_player: Player,
     screen_state: ScreenState,
     game_mode: GameMode,
-    pub(crate) controllers: Controllers,
+    controllers: Controllers,
 }
 
 impl GameState {

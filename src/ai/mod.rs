@@ -17,7 +17,6 @@ fn terminal_score(state: &GameState, maximizer: Player, depth: i32) -> Option<i3
 
 fn minimax(
     state: &GameState,
-    turn: Player,
     maximizer: Player,
     depth: i32,
     mut alpha: i32,
@@ -26,7 +25,7 @@ fn minimax(
     if let Some(score) = terminal_score(state, maximizer, depth) {
         return score;
     }
-    let is_maximizing = turn == maximizer;
+    let is_maximizing = state.current_player() == maximizer;
     let mut best = if is_maximizing { i32::MIN } else { i32::MAX };
 
     for (i, spot) in state.board().iter().enumerate() {
@@ -37,7 +36,6 @@ fn minimax(
 
             let score = minimax(
                 &next,
-                next.current_player(),
                 maximizer,
                 depth + 1,
                 alpha,
@@ -74,7 +72,6 @@ fn hard(state: &GameState) -> usize {
 
             let score = minimax(
                 &next,
-                next.current_player(),
                 maximizer,
                 1,
                 i32::MIN,

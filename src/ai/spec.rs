@@ -4,6 +4,10 @@ mod ai {
     use crate::game::next_state;
     use crate::state::GameState;
 
+    fn is_game(state: &GameState) -> bool {
+        rules::winner(&state.board()).is_none() && !rules::is_tie(&state.board())
+    }
+
     #[test]
     fn center_on_empty_board() {
         let state = GameState::new();
@@ -66,10 +70,10 @@ mod ai {
     }
 
     #[test]
-    fn ai_vs_ai_from_empty_board_is_tie() {
+    fn ai_from_empty_board_is_tie() {
         let mut state = GameState::new();
 
-        while rules::winner(&state.board()).is_none() && !rules::is_tie(&state.board()) {
+        while is_game(&state) {
             let mv = ai_move(&state);
             state = next_state(&state, mv);
         }
@@ -87,14 +91,14 @@ mod ai {
     }
 
     #[test]
-    fn ai_vs_ai_ties_from_any_first_move() {
+    fn ai_ties_from_any_first_move() {
         let state: GameState = GameState::new();
         let open_positions = rules::_open_cells(state.board());
         for pos in open_positions {
             let mut state = GameState::new();
             state = next_state(&state, pos);
 
-            while rules::winner(&state.board()).is_none() && !rules::is_tie(&state.board()) {
+            while is_game(&state) {
                 let mv = ai_move(&state);
                 state = next_state(&state, mv);
             }
