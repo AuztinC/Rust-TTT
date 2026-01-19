@@ -11,7 +11,7 @@
    
    ``xattr -d com.apple.quarantine ~/Downloads/arc-rust-ttt``
    
-   ``~/Downloads/arc-rust``
+   ``~/Downloads/arc-rust-ttt``
 
 ## Run (run in repository)
 ###Requirements: Rust
