@@ -1,18 +1,16 @@
-# Welcome to yet another Tic-Tac-Toe!
+# Welcome to another Tic-Tac-Toe!
 ## Running this project
 
 ## Run (prebuilt binary)
 
 1. Download the binary from the GitHub Release page (Place it in your /Downloads folder)
 
-3. Make it executable (paste this into your terminal): Open a new terminal window and run a single command
+3. Make it executable and run: Open a new terminal window and paste this either as an entire block or in this order.
+   ``chmod +x ~/Downloads/arc-rust-ttt``
    
-   ``chmod +x ./Downloads/arc-rust-ttt``
-5. Run:
+   ``xattr -d com.apple.quarantine ~/Downloads/arc-rust-ttt``
    
-   Navigate to the file in your Finder (It should be in your /Downloads folder)
-   
-   Right click the file -> 'Open With' -> 'Terminal' -> Accept and Open
+   ``~/Downloads/arc-rust``
 
 ## Run (run in repository)
 ###Requirements: Rust
