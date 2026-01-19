@@ -3,7 +3,9 @@
 
 ## Run (prebuilt binary)
 
-1. Download the binary from the GitHub Release page (Place it in your /Downloads folder)
+1. Download the binary from the GitHub Release page:
+   
+   [https://github.com/AuztinC/Rust-TTT/releases/tag/TTT](https://github.com/AuztinC/Rust-TTT/releases/download/TTT/arc-rust-ttt)     (Place it in your /Downloads folder)
 
 3. Make it executable and run: Open a new terminal window and paste this either as an entire block or in this order.
    
