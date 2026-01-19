@@ -1,7 +1,17 @@
 # Welcome to yet another Tic-Tac-Toe!
 ## Running this project
 
-### Requirements: Rust
+## Run (prebuilt binary)
+
+1. Download the binary from the GitHub Release page
+Open a new terminal window and run these commands
+2. Make it executable:
+   ``chmod +x tictactoe``
+3. Run:
+   ``./arc-ttt``
+
+## Run (run in repository)
+###Requirements: Rust
 
 Check for Rust / Verify install 
  - ``rustc --version``
