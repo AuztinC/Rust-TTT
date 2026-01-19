@@ -6,6 +6,7 @@
 1. Download the binary from the GitHub Release page (Place it in your /Downloads folder)
 
 3. Make it executable and run: Open a new terminal window and paste this either as an entire block or in this order.
+   
    ``chmod +x ~/Downloads/arc-rust-ttt``
    
    ``xattr -d com.apple.quarantine ~/Downloads/arc-rust-ttt``
