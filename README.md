@@ -4,11 +4,14 @@
 ## Run (prebuilt binary)
 
 1. Download the binary from the GitHub Release page (Place it in your /Downloads folder)
-Open a new terminal window and run a single command
-2. Make it executable:
+
+3. Make it executable (paste this into your terminal): Open a new terminal window and run a single command
+   
    ``chmod +x ./Downloads/arc-rust-ttt``
-3. Run:
+5. Run:
+   
    Navigate to the file in your Finder (It should be in your /Downloads folder)
+   
    Right click the file -> 'Open With' -> 'Terminal' -> Accept and Open
 
 ## Run (run in repository)
